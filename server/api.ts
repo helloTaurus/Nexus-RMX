@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, type Request, type Response } from 'express';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { db } from './db.ts';
 import { validateAndStoreCv, getCvFile, deleteCvFile } from './storage.ts';
 import { enqueueApplicationEmails, retryOutboxEmail, processOutboxQueue } from './email.ts';
-import { requireRecruitmentAuth, logAuditEvent, RecruitmentRole } from './auth.ts';
+import { requireRecruitmentAuth, logAuditEvent, type RecruitmentRole } from './auth.ts';
 
 export const recruitmentRouter = Router();
 

@@ -15,7 +15,7 @@ function recruitmentApiPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
-    base: './', // Supports both GitHub Pages subpath and custom domain
+    base: 'https://github.com/helloTaurus/Nexus-RMX', // Supports both GitHub Pages subpath and custom domain
     plugins: [react(), tailwindcss(), recruitmentApiPlugin()],
     resolve: {
       alias: {

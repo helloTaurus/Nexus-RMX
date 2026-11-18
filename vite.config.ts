@@ -2,12 +2,12 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, Plugin } from 'vite';
-import apiApp from './server/index.ts';
 
 function recruitmentApiPlugin(): Plugin {
   return {
     name: 'nexus-recruitment-api',
-    configureServer(server) {
+    async configureServer(server) {
+      const { default: apiApp } = await import('./server/index.ts');
       server.middlewares.use(apiApp);
     },
   };
@@ -23,6 +23,7 @@ export default defineConfig(() => {
       },
     },
     server: {
+      allowedHosts: true as const,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',

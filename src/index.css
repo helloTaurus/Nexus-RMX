@@ -1,0 +1,1028 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --bg-canvas: #000000;
+    --accent-emerald: #00e575;
+    --accent-lime: #10f585;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--bg-canvas);
+    color: #f8fafc;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    background-color: var(--bg-canvas);
+    overflow-x: hidden;
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+}
+
+.font-display {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-sans);
+}
+
+.font-mono-nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tuyo vibrant green accent container */
+.bg-tuyo-green {
+  background-color: #00e575;
+}
+
+.text-tuyo-green {
+  color: #00e575;
+}
+
+/* Glassmorphism panels */
+.glass-panel {
+  background: rgba(18, 18, 20, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(0, 229, 117, 0.35);
+  background: rgba(24, 24, 28, 0.85);
+  box-shadow: 0 20px 50px -15px rgba(0, 229, 117, 0.15);
+}
+
+.glow-tuyo {
+  box-shadow: 0 0 60px -10px rgba(0, 229, 117, 0.3);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00e575;
+}
+
+/* 3D card tilt & perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Text gradient utility */
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #ffffff 40%, #00e575 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero Full Tint (Dark mode default) - smooth left-to-right tint allowing image visibility */
+.hero-full-tint {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.62) 45%, rgba(0, 0, 0, 0.35) 100%);
+}
+.hero-bottom-tint {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, transparent 100%);
+}
+
+/* =========================================================================
+   MATERIAL DESIGN 3 (M3) INTERACTION TOKENS & STATE LAYERS
+   ========================================================================= */
+:root {
+  --m3-ease-emphasized: cubic-bezier(0.2, 0.0, 0.0, 1.0);
+  --m3-ease-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1.0);
+  --m3-ease-accelerate: cubic-bezier(0.3, 0.0, 0.8, 0.15);
+  --m3-ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1.0);
+}
+
+/* Tactile press feedback */
+.m3-press {
+  transition: transform 0.18s var(--m3-ease-emphasized), box-shadow 0.18s var(--m3-ease-emphasized);
+}
+.m3-press:active {
+  transform: scale(0.975);
+}
+
+/* Material 3 Surface Elevators */
+.m3-card-hover {
+  transition: transform 0.25s var(--m3-ease-emphasized), box-shadow 0.25s var(--m3-ease-emphasized), border-color 0.25s var(--m3-ease-emphasized);
+}
+.m3-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -8px rgba(0, 229, 117, 0.15), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 229, 117, 0.45);
+}
+
+/* Material Ripple State Layer */
+.m3-ripple {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.m3-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.55s var(--m3-ease-decelerate), opacity 0.55s var(--m3-ease-decelerate);
+}
+.m3-ripple:active::after {
+  transform: translate(-50%, -50%) scale(2.2);
+  opacity: 0.25;
+  transition: 0s;
+}
+
+/* Material 3 Styled Range Slider */
+input[type="range"].m3-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  outline: none;
+  transition: background 0.2s ease;
+}
+input[type="range"].m3-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #00e575;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(0, 229, 117, 0.45), 0 0 0 0 rgba(0, 229, 117, 0.2);
+  transition: transform 0.18s var(--m3-ease-emphasized), box-shadow 0.18s var(--m3-ease-emphasized);
+}
+input[type="range"].m3-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 3px 12px rgba(0, 229, 117, 0.6), 0 0 0 8px rgba(0, 229, 117, 0.15);
+}
+input[type="range"].m3-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.3);
+  box-shadow: 0 4px 16px rgba(0, 229, 117, 0.75), 0 0 0 12px rgba(0, 229, 117, 0.25);
+}
+input[type="range"].m3-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: #00e575;
+  cursor: grab;
+  box-shadow: 0 2px 8px rgba(0, 229, 117, 0.45);
+  transition: transform 0.18s var(--m3-ease-emphasized), box-shadow 0.18s var(--m3-ease-emphasized);
+}
+input[type="range"].m3-slider::-moz-range-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 8px rgba(0, 229, 117, 0.15);
+}
+
+/* =========================================================================
+   IO-REVEAL VIEWPORT ANIMATIONS (Ensures content is never hidden or blank)
+   ========================================================================= */
+.io-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.io-reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.io-reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.io-reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.io-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* =========================================================================
+   LIGHT MODE OVERRIDES: INSTITUTIONAL FINTECH ROYAL BLUE & ACCESSIBILITY
+   ========================================================================= */
+html.light,
+html.light body {
+  --bg-canvas: #f0f2f5;
+  background-color: #f0f2f5 !important;
+  color: #0f172a;
+}
+
+/* Page canvas backgrounds - warm technical slate, not blinding flat white */
+html.light .bg-black,
+html.light .bg-\[\#000000\],
+html.light .bg-\[\#07090e\],
+html.light .bg-\[\#0a0a0c\],
+html.light .bg-\[\#0c1017\],
+html.light .bg-\[\#0d0f12\],
+html.light .bg-\[\#0e1320\],
+html.light .bg-\[\#0f1422\],
+html.light .bg-\[\#101524\] {
+  background-color: #f0f2f5 !important;
+}
+
+/* Elevated cards, Bento grid, modals, and containers convert to crisp pure white (Hero section is dark canvas) */
+html.light .bento-card,
+html.light .testimonial-card,
+html.light .product-spec-card,
+html.light .product-sim-card,
+html.light .calc-output-card,
+html.light [class*="bg-neutral-900"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-neutral-950"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-neutral-800"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-neutral-700"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-slate-900"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-slate-800"]:not(.navbar-backdrop-overlay):not(.hero-section *),
+html.light [class*="bg-black\/"]:not(.navbar-backdrop-overlay):not(.hero-section *) {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a;
+}
+
+/* Subtle Inset figure boxes and metric containers */
+html.light .calc-figure-box,
+html.light .inset-box,
+html.light .bg-white\/\[0\.02\],
+html.light .bg-white\/\[0\.03\],
+html.light .bg-white\/\[0\.04\],
+html.light .bg-white\/\[0\.05\],
+html.light .bg-white\/\[0\.06\],
+html.light .bg-white\/5,
+html.light .bg-white\/10 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Shadows in light mode - clean ambient elevation, eliminate harsh dark halos */
+html.light [class*="shadow-black"],
+html.light [class*="shadow-black\/"] {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* M3 Card Hover States - Crisp Apple elevation */
+html.light .m3-card-hover {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05) !important;
+}
+html.light .m3-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* =========================================================================
+   APPLE-CALIBRATED LIGHT MODE ACCENT & NEUTRAL SYSTEM
+   ========================================================================= */
+
+/* Primary CTA Buttons - Apple Blue (Strictly applied to interactive buttons & links) */
+html.light button.bg-\[\#00e575\],
+html.light a.bg-\[\#00e575\],
+html.light button.bg-\[\#10f585\],
+html.light a.bg-\[\#10f585\],
+html.light button.bg-\[\#15f38a\],
+html.light a.bg-\[\#15f38a\],
+html.light button.bg-emerald-500,
+html.light a.bg-emerald-500,
+html.light button.bg-emerald-400,
+html.light a.bg-emerald-400 {
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 4px 14px 0 rgba(0, 113, 227, 0.22) !important;
+}
+html.light button.bg-\[\#00e575\] *,
+html.light a.bg-\[\#00e575\] *,
+html.light button.bg-\[\#10f585\] *,
+html.light a.bg-\[\#10f585\] *,
+html.light button.bg-\[\#15f38a\] *,
+html.light a.bg-\[\#15f38a\] *,
+html.light button.bg-emerald-500 *,
+html.light a.bg-emerald-500 *,
+html.light button.bg-emerald-400 *,
+html.light a.bg-emerald-400 * {
+  color: #ffffff !important;
+}
+html.light button.bg-\[\#00e575\]:hover,
+html.light a.bg-\[\#00e575\]:hover,
+html.light button.bg-\[\#10f585\]:hover,
+html.light a.bg-\[\#10f585\]:hover,
+html.light button.bg-\[\#15f38a\]:hover,
+html.light a.bg-\[\#15f38a\]:hover,
+html.light button.hover\:bg-\[\#15f38a\]:hover,
+html.light a.hover\:bg-\[\#15f38a\]:hover,
+html.light button.hover\:bg-\[\#10f585\]:hover,
+html.light a.hover\:bg-\[\#10f585\]:hover,
+html.light button.hover\:bg-\[\#00e575\]:hover,
+html.light a.hover\:bg-\[\#00e575\]:hover {
+  background-color: #0077ed !important;
+  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.32) !important;
+}
+
+/* Headline Text Accents in Light Mode - High-contrast crisp charcoal */
+html.light h1 [class*="text-[#00e575]"],
+html.light h2 [class*="text-[#00e575]"],
+html.light h3 [class*="text-[#00e575]"],
+html.light .hero-headline-highlight {
+  color: #0f172a !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Hero Checkmarks */
+html.light .hero-check-icon,
+html.light .hero-check-icon * {
+  color: #334155 !important;
+}
+
+/* Rates & APY Financial Percentages */
+html.light .text-\[\#00e575\],
+html.light .text-\[\#10f585\],
+html.light .text-\[\#15f38a\],
+html.light .text-emerald-400,
+html.light .text-emerald-500,
+html.light .text-emerald-600 {
+  color: #059669 !important;
+}
+
+/* Inset Badges, Chips & Highlights - Apple clean neutral */
+html.light .bg-\[\#00e575\]\/10,
+html.light .bg-\[\#00e575\]\/20,
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/20,
+html.light .bg-emerald-400\/10,
+html.light .bg-emerald-400\/20,
+html.light [class*="bg-[#00e575]/"],
+html.light [class*="bg-emerald-500/"] {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
+}
+html.light .bg-\[\#00e575\]\/10 *,
+html.light .bg-\[\#00e575\]\/20 *,
+html.light .bg-emerald-500\/10 *,
+html.light .bg-emerald-500\/20 * {
+  color: #334155 !important;
+}
+
+/* Border Accents */
+html.light .border-\[\#00e575\],
+html.light .border-emerald-500,
+html.light .border-emerald-400 {
+  border-color: #cbd5e1 !important;
+}
+html.light .border-\[\#00e575\]\/20,
+html.light .border-\[\#00e575\]\/30,
+html.light .border-\[\#00e575\]\/40,
+html.light .border-emerald-500\/20,
+html.light .border-emerald-500\/30,
+html.light .border-emerald-500\/40 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Sliders Track & Thumb in Light Mode */
+html.light .accent-\[\#00e575\],
+html.light input[type="range"] {
+  accent-color: #0071e3 !important;
+}
+html.light input[type="range"].m3-slider {
+  background: #cbd5e1 !important;
+  accent-color: #0071e3 !important;
+}
+html.light input[type="range"].m3-slider::-webkit-slider-thumb {
+  background: #0071e3 !important;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2) !important;
+}
+
+/* Form inputs & dropdown selects in light mode */
+html.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #0071e3 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18) !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Text color adaptations */
+html.light .text-white:not(.keep-white) {
+  color: #0f172a !important;
+}
+
+html.light .keep-white {
+  color: #ffffff !important;
+}
+
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300,
+html.light .text-neutral-200,
+html.light .text-neutral-300 {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400,
+html.light .text-neutral-400 {
+  color: #64748b !important;
+}
+
+html.light .text-slate-500,
+html.light .text-neutral-500 {
+  color: #64748b !important;
+}
+
+/* Border adaptations */
+html.light [class*="border-white/"],
+html.light .border-neutral-800,
+html.light .border-neutral-700,
+html.light .border-slate-800,
+html.light .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Glassmorphism panels in light mode */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light .glass-panel-hover:hover {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Full-screen backdrop blur overlay when dropdown or mobile drawer is open */
+.navbar-backdrop-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 40 !important;
+  backdrop-filter: blur(16px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+  transition: opacity 0.2s ease-in-out !important;
+  pointer-events: auto !important;
+}
+
+html.light .navbar-backdrop-overlay {
+  background-color: rgba(15, 23, 42, 0.4) !important;
+}
+
+html:not(.light) .navbar-backdrop-overlay,
+html.dark .navbar-backdrop-overlay {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Light mode navbar: initial transparent state on hero vs scrolled / subpage state */
+html.light .navbar-transparent-header .navbar-transparent-nav > button,
+html.light .navbar-transparent-header .navbar-transparent-nav > div > button,
+html.light .navbar-transparent-header .navbar-transparent-nav > button > span,
+html.light .navbar-transparent-header .navbar-transparent-nav > div > button > span,
+html.light .navbar-transparent-header .navbar-transparent-nav > div > button > svg {
+  color: #ffffff !important;
+}
+
+html.light .navbar-scrolled-header .navbar-scrolled-nav button,
+html.light .navbar-scrolled-header .navbar-scrolled-nav span,
+html.light .navbar-scrolled-header .navbar-scrolled-nav svg {
+  color: #0f172a !important;
+}
+
+/* Nav item selector on initial transparent navbar */
+.nav-selector-active-transparent {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.nav-selector-active-transparent span,
+.nav-selector-active-transparent svg {
+  color: #ffffff !important;
+}
+
+/* Navbar Apply Now button: text MUST ALWAYS be white in Light Mode, and black in Dark Mode */
+html.light .navbar-apply-btn,
+html.light .navbar-apply-btn *,
+html.light .navbar-apply-text {
+  color: #ffffff !important;
+}
+
+html:not(.light) .navbar-apply-btn,
+html:not(.light) .navbar-apply-btn *,
+html.dark .navbar-apply-btn,
+html.dark .navbar-apply-btn * {
+  color: #000000 !important;
+}
+
+/* Dropdown in light mode: frosted semi-transparent glass with rich blur */
+html.light .navbar-dropdown {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18), 0 0 1px 1px rgba(255, 255, 255, 0.8) inset !important;
+}
+
+html.light .navbar-dropdown button {
+  color: #0f172a !important;
+}
+
+html.light .navbar-dropdown button:hover {
+  background-color: rgba(241, 245, 249, 0.85) !important;
+}
+
+html.light .navbar-dropdown .text-white {
+  color: #0f172a !important;
+}
+
+html.light .navbar-dropdown .text-neutral-400 {
+  color: #475569 !important;
+}
+
+/* Icons in dropdown in light mode: dark slate so they are clearly visible */
+html.light .navbar-dropdown svg {
+  color: #0f172a !important;
+}
+
+/* Mobile drawer in light mode: frosted semi-transparent glass */
+html.light .navbar-mobile-drawer {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+html.light .navbar-mobile-drawer button:not(.navbar-apply-btn),
+html.light .navbar-mobile-drawer span:not(.navbar-apply-text) {
+  color: #0f172a !important;
+}
+
+html.light .navbar-mobile-drawer .text-neutral-400,
+html.light .navbar-mobile-drawer .text-neutral-300 {
+  color: #64748b !important;
+}
+
+/* Mobile hamburger & close toggle button in light mode */
+html.light .navbar-transparent-header .navbar-mobile-toggle,
+html.light .navbar-transparent-header .navbar-mobile-toggle svg,
+html.light .navbar-mobile-toggle-white,
+html.light .navbar-mobile-toggle-white svg,
+html.light .navbar-mobile-toggle svg.keep-white {
+  color: #ffffff !important;
+}
+
+/* =========================================================================
+   HERO FULL TINT (Light Mode matches Dark Mode cinematic overlay)
+   ========================================================================= */
+html.light .hero-full-tint {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.62) 45%, rgba(0, 0, 0, 0.35) 100%) !important;
+}
+
+html.light .hero-bottom-tint {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, transparent 100%) !important;
+}
+
+/* Ensure Hero section retains dark canvas and high-contrast text on dark overlay in light mode */
+html.light .hero-section {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.light .hero-section h1,
+html.light .hero-section h1 span:not(.hero-headline-highlight) {
+  color: #ffffff !important;
+}
+
+html.light .hero-section .hero-headline-highlight {
+  color: #ffffff !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+html.light .hero-section p {
+  color: #cbd5e1 !important;
+}
+
+html.light .hero-section .hero-check-icon,
+html.light .hero-section .hero-check-icon * {
+  color: #00e575 !important;
+}
+
+html.light .hero-section .text-neutral-200 {
+  color: #e2e8f0 !important;
+}
+
+html.light .hero-section button.bg-neutral-900\/80 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+html.light .hero-section button.bg-neutral-900\/80:hover {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+html.light .marquee-mask-left {
+  background: linear-gradient(to right, #f0f2f5 0%, rgba(240, 242, 245, 0.85) 50%, transparent 100%) !important;
+}
+html.light .marquee-mask-right {
+  background: linear-gradient(to left, #f0f2f5 0%, rgba(240, 242, 245, 0.85) 50%, transparent 100%) !important;
+}
+
+/* Hero Slide Tabs on Dark Overlay */
+html.light .hero-section .hero-slide-tab,
+html.light .hero-slide-tab {
+  background-color: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-slide-tab.hero-slide-tab-active,
+html.light .hero-slide-tab.hero-slide-tab-active {
+  background-color: rgba(30, 41, 59, 0.85) !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 1px #0071e3, 0 8px 24px -2px rgba(0, 0, 0, 0.5) !important;
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-slide-tab *,
+html.light .hero-slide-tab * {
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-slide-tab:not(.hero-slide-tab-active) .text-neutral-400,
+html.light .hero-section .hero-slide-tab:not(.hero-slide-tab-active) .text-neutral-500 {
+  color: #cbd5e1 !important;
+}
+html.light .hero-section .hero-slide-tab.hero-slide-tab-active span.w-1\.5.h-1\.5,
+html.light .hero-slide-tab.hero-slide-tab-active span.w-1\.5.h-1\.5 {
+  background-color: #0071e3 !important;
+}
+html.light .hero-section .hero-slide-progress-bar,
+html.light .hero-slide-progress-bar {
+  background-color: #0071e3 !important;
+}
+
+/* Hero Stat Cards on Dark Overlay */
+html.light .hero-section .hero-stat-card,
+html.light .hero-stat-card {
+  background-color: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.4) !important;
+}
+html.light .hero-section .hero-stat-card:hover,
+html.light .hero-stat-card:hover {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(0, 113, 227, 0.4) !important;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.5) !important;
+}
+html.light .hero-section .hero-stat-card .text-white,
+html.light .hero-stat-card .text-white,
+html.light .hero-section .hero-stat-card [class*="font-extrabold"],
+html.light .hero-stat-card [class*="font-extrabold"],
+html.light .hero-section .hero-stat-card [class*="font-display"],
+html.light .hero-stat-card [class*="font-display"],
+html.light .hero-section .hero-stat-card .tabular-nums,
+html.light .hero-stat-card .tabular-nums {
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-stat-card p,
+html.light .hero-stat-card p {
+  color: #cbd5e1 !important;
+}
+
+/* Hero stat card badges */
+html.light .hero-section .hero-stat-card .text-\[\#00e575\],
+html.light .hero-stat-card .text-\[\#00e575\],
+html.light .hero-section .hero-stat-card [class*="text-[#00e575]"],
+html.light .hero-stat-card [class*="text-[#00e575]"] {
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-stat-card [class*="text-[#00e575]"] > span:not(.text-neutral-400),
+html.light .hero-stat-card [class*="text-[#00e575]"] > span:not(.text-neutral-400) {
+  color: #ffffff !important;
+}
+html.light .hero-section .hero-stat-card .text-neutral-400,
+html.light .hero-section .hero-stat-card .text-neutral-400 *,
+html.light .hero-stat-card .text-neutral-400,
+html.light .hero-stat-card .text-neutral-400 * {
+  color: #cbd5e1 !important;
+}
+
+/* =========================================================================
+   PHONE DEVICE CONTAINER & SHADOW (80% Reduction in Light Mode)
+   ========================================================================= */
+.phone-device-container {
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45));
+}
+html.light .phone-device-container {
+  filter: drop-shadow(0 12px 24px rgba(15, 23, 42, 0.08)) !important;
+}
+html.light .phone-ambient-glow {
+  display: none !important;
+}
+
+/* Testimonial Cards */
+html.light .testimonial-card {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+html.light .testimonial-card.testimonial-active {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08) !important;
+}
+html.light .testimonial-card p {
+  color: #334155 !important;
+}
+html.light .testimonial-card .text-white {
+  color: #0f172a !important;
+}
+html.light .testimonial-card .text-neutral-400 {
+  color: #64748b !important;
+}
+html.light .testimonial-card .border-t {
+  border-color: #f1f5f9 !important;
+}
+html.light .testimonial-card img {
+  border-color: #e2e8f0 !important;
+}
+
+/* Headline gradient utility for light mode */
+html.light .text-gradient-emerald {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #0f172a !important;
+  color: #0f172a !important;
+}
+
+/* Product Bento Indicator */
+html.light #products .bg-\[\#00e575\] {
+  background-color: #0071e3 !important;
+  box-shadow: 0 0 8px rgba(0, 113, 227, 0.4) !important;
+}
+
+/* =========================================================================
+   LARGE SHOWPIECE BANNERS: Apple Studio Minimalist Aesthetics
+   ========================================================================= */
+
+/* Almighty Card Section in Light Mode - Strictly pinned, NO hover color shift */
+html.light #card,
+html.light #card:hover,
+html.light #card:active,
+html.light section#card,
+html.light section#card:hover,
+html.light section#card:active {
+  background-color: #f5f5f7 !important;
+  background-image: none !important;
+  border-top: 1px solid #e5e5ea !important;
+  border-bottom: 1px solid #e5e5ea !important;
+  color: #1d1d1f !important;
+  box-shadow: none !important;
+}
+html.light #card h2 {
+  color: #1d1d1f !important;
+}
+html.light #card p {
+  color: #424245 !important;
+}
+html.light #card button {
+  background-color: #1d1d1f !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+html.light #card button:hover {
+  background-color: #2d2d2f !important;
+}
+
+/* Live Yield Ticker Banner in Light Mode - Strictly pinned, NO hover color change */
+html.light .yield-ticker-banner,
+html.light .yield-ticker-banner:hover,
+html.light .yield-ticker-banner:active,
+html.light .yield-ticker-banner:focus,
+html.light section.yield-ticker-banner,
+html.light section.yield-ticker-banner:hover,
+html.light section.yield-ticker-banner:active,
+html.light section.yield-ticker-banner:focus {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-top: 1px solid #e5e5ea !important;
+  border-bottom: 1px solid #e5e5ea !important;
+  color: #1d1d1f !important;
+  box-shadow: none !important;
+}
+html.light .yield-ticker-banner > div > div:first-child {
+  color: #64748b !important;
+}
+html.light .yield-ticker-banner .tabular-nums {
+  color: #0f172a !important;
+}
+html.light .yield-ticker-banner p {
+  color: #334155 !important;
+}
+html.light .yield-ticker-banner button {
+  background-color: #0071e3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.22) !important;
+}
+html.light .yield-ticker-banner button:hover {
+  background-color: #0077ed !important;
+}
+
+
+
+/* Almighty 3D Black Visa Card - Keep prestige obsidian metal styling */
+html.light .almighty-card,
+html.light #card .aspect-\[1\.586\/1\] {
+  background: linear-gradient(135deg, #121214 0%, #1a1a1e 50%, #000000 100%) !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+html.light .almighty-card *,
+html.light #card .aspect-\[1\.586\/1\] * {
+  color: #ffffff !important;
+}
+html.light .almighty-card .text-\[\#00e575\],
+html.light #card .aspect-\[1\.586\/1\] .text-\[\#00e575\] {
+  color: #60a5fa !important;
+}
+
+/* Leadership photo badge */
+html.light .leader-photo-badge {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  color: #93c5fd !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Product Facility Selector Ring & Active State */
+.calc-facility-btn.is-selected {
+  border-color: #00e575 !important;
+  box-shadow: 0 0 0 1px #00e575 !important;
+}
+
+html.light .calc-facility-btn.is-selected {
+  background-color: #f0f7ff !important;
+  border-color: #0071e3 !important;
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.45) !important;
+  color: #0f172a !important;
+}
+
+html.light .calc-facility-btn.is-selected .calc-facility-tag {
+  color: #0071e3 !important;
+}
+
+html.light .calc-facility-btn.is-selected .calc-facility-label {
+  color: #0f172a !important;
+}
+
+html.light .calc-facility-btn:not(.is-selected) {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+html.light .calc-facility-btn:not(.is-selected):hover {
+  border-color: #cbd5e1 !important;
+  background-color: #f8fafc !important;
+}
+
+html.light .calc-facility-btn:not(.is-selected) .calc-facility-tag {
+  color: #64748b !important;
+}
+
+html.light .calc-facility-btn:not(.is-selected) .calc-facility-label {
+  color: #1e293b !important;
+}
+
+/* Contact Google Maps - normal un-inverted map in light mode */
+html.light .contact-map-iframe {
+  filter: none !important;
+}
+
+/* Custom scrollbar in light mode */
+html.light ::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #0071e3;
+}
+
+/* =========================================================================
+   APPLE-INSPIRED LIGHT MODE FOOTER (Matches apple.com/ng/buy)
+   ========================================================================= */
+html.light footer {
+  background-color: #f5f5f7 !important;
+  border-top: 1px solid #d2d2d7 !important;
+  color: #424245 !important;
+}
+html.light footer .text-white {
+  color: #1d1d1f !important;
+  font-weight: 600;
+}
+html.light footer button,
+html.light footer a {
+  color: #424245 !important;
+}
+html.light footer button:hover,
+html.light footer a:hover {
+  color: #1d1d1f !important;
+  text-decoration: underline;
+}
+html.light footer .text-neutral-400,
+html.light footer .text-slate-400 {
+  color: #6e6e73 !important;
+}
+html.light footer .text-neutral-200 {
+  color: #1d1d1f !important;
+}
+html.light footer .border-white\/10 {
+  border-color: #e5e5ea !important;
+}
+html.light footer [class*="bg-white/"] {
+  background-color: #ffffff !important;
+  border-color: #d2d2d7 !important;
+  color: #1d1d1f !important;
+}
+html.light footer [class*="bg-white/"]:hover {
+  background-color: #e8e8ed !important;
+  color: #000000 !important;
+}
+html.light footer svg {
+  color: #424245 !important;
+}
+html.light footer a:hover svg,
+html.light footer button:hover svg {
+  color: #1d1d1f !important;
+}
+
+
+

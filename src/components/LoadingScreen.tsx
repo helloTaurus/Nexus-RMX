@@ -2,16 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const LoadingScreen: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(() => {
+    try {
+      return !sessionStorage.getItem('nexus-splash-seen');
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
-    // Show smooth animated brand splash on initial mount for 1.3 seconds
+    if (!isVisible) return;
+    try {
+      sessionStorage.setItem('nexus-splash-seen', '1');
+    } catch {}
+    // Brief brand reveal without artificially delaying mobile paint
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 1300);
+    }, 250);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isVisible]);
 
   return (
     <AnimatePresence>
@@ -19,9 +29,9 @@ export const LoadingScreen: React.FC = () => {
         <motion.div
           key="nexus-loading-screen"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.04 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black select-none pointer-events-auto"
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black select-none pointer-events-none"
           aria-label="Loading Nexus Finance LTD"
           role="status"
         >

@@ -89,6 +89,8 @@ export const LeadershipSection: React.FC<LeadershipSectionProps> = ({ compactBot
                     <img
                       src={leader.image}
                       alt={leader.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
@@ -187,6 +189,8 @@ export const LeadershipSection: React.FC<LeadershipSectionProps> = ({ compactBot
                         <img
                           src={modalLeader.image}
                           alt={modalLeader.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover object-top"
                           referrerPolicy="no-referrer"
                         />

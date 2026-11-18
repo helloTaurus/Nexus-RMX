@@ -248,6 +248,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApply, onNavigate }) => {
               <img
                 src={theme === 'light' ? './assets/nexus/NEXUS-coloured-HOR.png' : './assets/nexus/NEXUS-BW-HOR-WH.png'}
                 alt="Nexus Finance LTD"
+                loading="lazy"
+                decoding="async"
                 className="h-8 sm:h-9 w-auto object-contain transition-opacity duration-200"
               />
             </button>

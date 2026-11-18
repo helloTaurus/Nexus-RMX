@@ -385,10 +385,11 @@ export const MoveMoneySection: React.FC<SectionProps> = ({ onOpenApply }) => {
               {/* Realistic Phone Base Frame */}
               <div className="relative w-full rounded-[48px]">
                 <img
-                  src="./assets/aistudio/Restored_iPhone_Messages_inbox_f50c78da.png"
+                  src="./assets/nexus/iphone_messages_inbox.webp"
                   alt="Realistic iPhone displaying incoming Nexus Finance LTD Loan Alert in iOS Messages"
                   className="w-full h-auto block"
-                  loading="eager"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* iPhone Inner Screen Glass Container: Perfectly matches the screen bezel & isolates animation inside phone screen */}
@@ -411,9 +412,11 @@ export const MoveMoneySection: React.FC<SectionProps> = ({ onOpenApply }) => {
                         className="absolute top-[6.5%] left-[3%] right-[3%] z-30 drop-shadow-[0_12px_28px_rgba(0,0,0,0.5)]"
                       >
                         <img
-                          src="./assets/aistudio/Nexus_Finance_loan_notification_banner_3cc80e3a.png"
+                          src="./assets/nexus/loan_notification_banner.webp"
                           alt="Nexus Finance LTD: Your loan of NGN 1,500,000.00 has been credited to account 123***4821"
                           className="w-full h-auto block rounded-2xl"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </motion.div>
                     )}
@@ -684,6 +687,8 @@ export const TestimonialsSliderSection: React.FC = () => {
                     <img
                       src={item.avatar}
                       alt={item.author}
+                      loading="lazy"
+                      decoding="async"
                       className="w-12 h-12 rounded-full object-cover ring-2 ring-[#00e575]/40 shrink-0"
                       referrerPolicy="no-referrer"
                     />

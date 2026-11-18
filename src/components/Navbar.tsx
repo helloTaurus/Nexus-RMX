@@ -108,6 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenApply, onNavigate, current
               <img
                 src={isLightNavbar ? './assets/nexus/NEXUS-coloured-HOR.png' : './assets/nexus/NEXUS-coloured-HOR-dark.png'}
                 alt="Nexus Finance"
+                decoding="async"
                 className="h-8 sm:h-9 md:h-10 w-auto object-contain transition-opacity duration-200"
               />
             </button>

@@ -182,6 +182,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate, onOpenAppl
               <img
                 src={activeItem.image}
                 alt={activeItem.title}
+                decoding="async"
                 className="w-full h-full object-contain"
               />
 
@@ -298,6 +299,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate, onOpenAppl
                   <img
                     src={item.image}
                     alt={item.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-[#00e575] border border-white/10 uppercase tracking-wider">

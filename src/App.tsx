@@ -1,33 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { TrustMarquee } from './components/TrustMarquee';
-import {
-  MoveMoneySection,
-  TestimonialsSliderSection,
-  LiveTickingYieldSection,
-} from './components/TuyoShowcaseSections';
 import { ProductBento } from './components/ProductBento';
-import { InteractiveCalculator } from './components/InteractiveCalculator';
-import { LeadershipSection } from './components/LeadershipSection';
-import { FAQSection } from './components/FAQSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
-import { ApplyModal } from './components/ApplyModal';
-import { InvestModal } from './components/InvestModal';
-import { AboutUsPage } from './components/AboutUsPage';
-import { ProductDetailPage } from './components/ProductDetailPage';
-import { BlogPage } from './components/BlogPage';
-import { CareersPage } from './components/CareersPage';
-import { GalleryPage } from './components/GalleryPage';
-import { CmsPortal } from './components/CmsPortal';
-import { HrmsExecutivePortal } from './components/HrmsExecutivePortal';
-import { ExpensePortal } from './components/ExpensePortal';
 import { MaterialFab } from './components/MaterialFab';
 import { MaterialSnackbar, SnackbarMessage } from './components/MaterialSnackbar';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CookieConsent } from './components/CookieConsent';
 import { useIOReveal } from './hooks/useIOReveal';
+
+// Lazy-loaded below-the-fold home sections
+const InteractiveCalculator = lazy(() =>
+  import('./components/InteractiveCalculator').then((m) => ({ default: m.InteractiveCalculator }))
+);
+const TrustMarquee = lazy(() =>
+  import('./components/TrustMarquee').then((m) => ({ default: m.TrustMarquee }))
+);
+const MoveMoneySection = lazy(() =>
+  import('./components/TuyoShowcaseSections').then((m) => ({ default: m.MoveMoneySection }))
+);
+const TestimonialsSliderSection = lazy(() =>
+  import('./components/TuyoShowcaseSections').then((m) => ({ default: m.TestimonialsSliderSection }))
+);
+const LiveTickingYieldSection = lazy(() =>
+  import('./components/TuyoShowcaseSections').then((m) => ({ default: m.LiveTickingYieldSection }))
+);
+const LeadershipSection = lazy(() =>
+  import('./components/LeadershipSection').then((m) => ({ default: m.LeadershipSection }))
+);
+const FAQSection = lazy(() =>
+  import('./components/FAQSection').then((m) => ({ default: m.FAQSection }))
+);
+const ContactSection = lazy(() =>
+  import('./components/ContactSection').then((m) => ({ default: m.ContactSection }))
+);
+const Footer = lazy(() =>
+  import('./components/Footer').then((m) => ({ default: m.Footer }))
+);
+
+// Lazy-loaded secondary pages & internal portals (excluded from initial mobile bundle)
+const AboutUsPage = lazy(() =>
+  import('./components/AboutUsPage').then((m) => ({ default: m.AboutUsPage }))
+);
+const ProductDetailPage = lazy(() =>
+  import('./components/ProductDetailPage').then((m) => ({ default: m.ProductDetailPage }))
+);
+const BlogPage = lazy(() =>
+  import('./components/BlogPage').then((m) => ({ default: m.BlogPage }))
+);
+const CareersPage = lazy(() =>
+  import('./components/CareersPage').then((m) => ({ default: m.CareersPage }))
+);
+const GalleryPage = lazy(() =>
+  import('./components/GalleryPage').then((m) => ({ default: m.GalleryPage }))
+);
+const CmsPortal = lazy(() =>
+  import('./components/CmsPortal').then((m) => ({ default: m.CmsPortal }))
+);
+const HrmsExecutivePortal = lazy(() =>
+  import('./components/HrmsExecutivePortal').then((m) => ({ default: m.HrmsExecutivePortal }))
+);
+const ExpensePortal = lazy(() =>
+  import('./components/ExpensePortal').then((m) => ({ default: m.ExpensePortal }))
+);
+
+// Lazy-loaded interactive modals (fetched only when opened)
+const ApplyModal = lazy(() =>
+  import('./components/ApplyModal').then((m) => ({ default: m.ApplyModal }))
+);
+const InvestModal = lazy(() =>
+  import('./components/InvestModal').then((m) => ({ default: m.InvestModal }))
+);
 
 type ActiveView =
   | 'home'
@@ -222,45 +264,47 @@ export default function App() {
       />
 
       <main>
-        {currentView === 'about' && (
-          <AboutUsPage onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
-        )}
+        <Suspense fallback={<div className="min-h-[60vh] bg-black" />}>
+          {currentView === 'about' && (
+            <AboutUsPage onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
+          )}
 
-        {currentView === 'product-detail' && (
-          <ProductDetailPage
-            productId={selectedProductId}
-            onOpenApply={handleOpenApply}
-            onNavigate={handleNavigate}
-            onShowSnackbar={showSnackbar}
-          />
-        )}
+          {currentView === 'product-detail' && (
+            <ProductDetailPage
+              productId={selectedProductId}
+              onOpenApply={handleOpenApply}
+              onNavigate={handleNavigate}
+              onShowSnackbar={showSnackbar}
+            />
+          )}
 
-        {currentView === 'blog' && (
-          <BlogPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
-        )}
+          {currentView === 'blog' && (
+            <BlogPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
+          )}
 
-        {currentView === 'careers' && (
-          <CareersPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
-        )}
+          {currentView === 'careers' && (
+            <CareersPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
+          )}
 
-        {currentView === 'gallery' && (
-          <GalleryPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
-        )}
+          {currentView === 'gallery' && (
+            <GalleryPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
+          )}
 
-        {currentView === 'cms' && (
-          <CmsPortal onNavigate={handleNavigate} />
-        )}
+          {currentView === 'cms' && (
+            <CmsPortal onNavigate={handleNavigate} />
+          )}
 
-        {currentView === 'expense' && (
-          <ExpensePortal onNavigate={handleNavigate} />
-        )}
+          {currentView === 'expense' && (
+            <ExpensePortal onNavigate={handleNavigate} />
+          )}
 
-        {(currentView === 'hrms' || currentView === 'staffportal') && (
-          <HrmsExecutivePortal
-            initialViewMode={currentView === 'staffportal' ? 'employee_self_service' : 'hr_admin'}
-            onNavigate={handleNavigate}
-          />
-        )}
+          {(currentView === 'hrms' || currentView === 'staffportal') && (
+            <HrmsExecutivePortal
+              initialViewMode={currentView === 'staffportal' ? 'employee_self_service' : 'hr_admin'}
+              onNavigate={handleNavigate}
+            />
+          )}
+        </Suspense>
 
         {currentView === 'home' && (
           <>
@@ -276,43 +320,47 @@ export default function App() {
               onSelectProduct={(prodId) => handleNavigate('product-detail', prodId)}
             />
 
-            {/* 4. Loan Calculator ("Real calculations...") */}
-            <InteractiveCalculator
-              onOpenApply={handleOpenApply}
-              onShowSnackbar={showSnackbar}
-            />
+            <Suspense fallback={null}>
+              {/* 4. Loan Calculator ("Real calculations...") */}
+              <InteractiveCalculator
+                onOpenApply={handleOpenApply}
+                onShowSnackbar={showSnackbar}
+              />
 
-            {/* 5. "Institutional payroll..." (TrustMarquee) */}
-            <div id="partners">
-              <TrustMarquee />
-            </div>
+              {/* 5. "Institutional payroll..." (TrustMarquee) */}
+              <div id="partners">
+                <TrustMarquee />
+              </div>
 
-            {/* 6. "Prompt liquidity. Disbursed in 15 minutes flat." */}
-            <MoveMoneySection onOpenApply={handleOpenApply} />
+              {/* 6. "Prompt liquidity. Disbursed in 15 minutes flat." */}
+              <MoveMoneySection onOpenApply={handleOpenApply} />
 
-            {/* 7. "Executive Governance & Integrity" / Leadership */}
-            <LeadershipSection />
+              {/* 7. "Executive Governance & Integrity" / Leadership */}
+              <LeadershipSection />
 
-            {/* 8. FAQ */}
-            <FAQSection />
+              {/* 8. FAQ */}
+              <FAQSection />
 
-            {/* 9. "Join 100k+ people and testimonial" */}
-            <TestimonialsSliderSection />
+              {/* 9. "Join 100k+ people and testimonial" */}
+              <TestimonialsSliderSection />
 
-            {/* 10. "since your last visit.." */}
-            <LiveTickingYieldSection
-              onOpenApply={handleOpenApply}
-              onOpenInvest={() => setInvestModalOpen(true)}
-            />
+              {/* 10. "since your last visit.." */}
+              <LiveTickingYieldSection
+                onOpenApply={handleOpenApply}
+                onOpenInvest={() => setInvestModalOpen(true)}
+              />
 
-            {/* 11. "Ping us, we’re here" */}
-            <ContactSection onShowSnackbar={showSnackbar} />
+              {/* 11. "Ping us, we’re here" */}
+              <ContactSection onShowSnackbar={showSnackbar} />
+            </Suspense>
           </>
         )}
       </main>
 
       {/* 12. Footer with dynamic routing & socials */}
-      <Footer onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
+      <Suspense fallback={null}>
+        <Footer onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
+      </Suspense>
 
       {/* Material 3 Extended Floating Action Button (Quick Loan Calculator access) */}
       <MaterialFab
@@ -326,24 +374,32 @@ export default function App() {
         onClose={() => setSnackbarMessage(null)}
       />
 
-      {/* Fast-Track Loan Application Modal */}
-      <ApplyModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        defaultProduct={modalDefaultProduct}
-        defaultAmount={modalDefaultAmount}
-        defaultTenure={modalDefaultTenure}
-        onShowSnackbar={showSnackbar}
-      />
+      {/* Fast-Track Loan Application Modal (lazy-loaded only when opened) */}
+      {modalOpen && (
+        <Suspense fallback={null}>
+          <ApplyModal
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            defaultProduct={modalDefaultProduct}
+            defaultAmount={modalDefaultAmount}
+            defaultTenure={modalDefaultTenure}
+            onShowSnackbar={showSnackbar}
+          />
+        </Suspense>
+      )}
 
-      {/* High-Yield Wealth Investment Inquiry Modal */}
-      <InvestModal
-        isOpen={investModalOpen}
-        onClose={() => setInvestModalOpen(false)}
-        defaultAmount={1000000}
-        defaultTenureDays={365}
-        onShowSnackbar={showSnackbar}
-      />
+      {/* High-Yield Wealth Investment Inquiry Modal (lazy-loaded only when opened) */}
+      {investModalOpen && (
+        <Suspense fallback={null}>
+          <InvestModal
+            isOpen={investModalOpen}
+            onClose={() => setInvestModalOpen(false)}
+            defaultAmount={1000000}
+            defaultTenureDays={365}
+            onShowSnackbar={showSnackbar}
+          />
+        </Suspense>
+      )}
 
       {/* Best-Practice Functional & Essential Cookie Consent Modal */}
       <CookieConsent />

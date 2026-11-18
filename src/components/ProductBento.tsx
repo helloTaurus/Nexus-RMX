@@ -390,6 +390,8 @@ export const ProductBento: React.FC<ProductBentoProps> = ({ onSelectProduct }) =
                       <img
                         src={heroCard.image}
                         alt={heroCard.imageAlt || heroCard.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
                       {/* Gradient for tag readability */}

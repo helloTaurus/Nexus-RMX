@@ -298,6 +298,7 @@ export const Hero: React.FC<HeroProps> = ({
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="w-full h-full object-cover object-center lg:object-[68%_center]"
               loading="eager"
+              decoding="async"
               fetchPriority="high"
             />
           </AnimatePresence>

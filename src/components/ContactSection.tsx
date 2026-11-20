@@ -26,16 +26,66 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onShowSnackbar }
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const mailtoHref = `mailto:support@nexusfinanceltd.com?subject=${encodeURIComponent(
+    `Priority Inquiry: ${formState.topic} — ${formState.name || 'Website Visitor'}`
+  )}&body=${encodeURIComponent(
+    `Name: ${formState.name}\nPhone: ${formState.phone}\nEmail: ${formState.email}\nFacility of Interest: ${formState.topic}\n\nMessage:\n${formState.message}`
+  )}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) return; // Ignore bot submissions
+
     setSubmitting(true);
-    // Simulate API dispatch to support@nexusfinanceltd.com
-    setTimeout(() => {
-      setSubmitting(false);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/support@nexusfinanceltd.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          'Full Name': formState.name.trim(),
+          'Phone Number': formState.phone.trim(),
+          'Official Email': formState.email.trim(),
+          'Facility of Interest': formState.topic,
+          Message: formState.message.trim() || '(No additional details provided)',
+          _subject: `Priority Inquiry: ${formState.topic} — ${formState.name.trim()}`,
+          _replyto: formState.email.trim(),
+          _template: 'table',
+          _captcha: 'false',
+          _honey: honeypot,
+        }),
+      });
+
+      const data = await response.json().catch(() => null);
+      const isSuccess =
+        response.ok &&
+        (data?.success === true || data?.success === 'true');
+
+      if (!isSuccess) {
+        throw new Error(
+          data?.message || 'Unable to deliver your inquiry right now. Please try again or email support@nexusfinanceltd.com directly.'
+        );
+      }
+
       setSubmitted(true);
-      onShowSnackbar?.('Inquiry received! Our Abuja team will respond within 15 minutes.', 'success');
-    }, 700);
+      onShowSnackbar?.('Inquiry sent to support@nexusfinanceltd.com! Our Abuja team will respond shortly.', 'success');
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : 'Network error while sending your inquiry. Please retry or use your email client below.';
+      setSubmitError(message);
+      onShowSnackbar?.('Could not send inquiry automatically. Please retry or email us directly.', 'info');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -156,7 +206,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onShowSnackbar }
                 </p>
                 <div className="pt-4 flex flex-wrap justify-center gap-3">
                   <a
-                    href={`mailto:support@nexusfinanceltd.com?subject=Inquiry%20from%20${encodeURIComponent(formState.name)}%20-%20${encodeURIComponent(formState.topic)}&body=${encodeURIComponent(`Name: ${formState.name}\nPhone: ${formState.phone}\nEmail: ${formState.email}\nTopic: ${formState.topic}\n\nMessage:\n${formState.message}`)}`}
+                    href={mailtoHref}
                     className="px-6 py-2.5 rounded-xl bg-[#00e575] text-black text-xs font-bold hover:bg-[#15f38a] transition-all cursor-pointer shadow-md"
                   >
                     Open in Your Email Client
@@ -174,6 +224,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onShowSnackbar }
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
+                <input
+                  type="text"
+                  name="_honey"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-xs uppercase tracking-wider text-slate-300 font-semibold mb-2">
@@ -258,6 +318,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onShowSnackbar }
                     className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-800 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-[#00e575] transition-colors resize-none"
                   />
                 </div>
+
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="rounded-xl bg-red-500/10 border border-red-500/30 p-4 text-xs text-red-200 space-y-2"
+                  >
+                    <p>{submitError}</p>
+                    <div className="flex flex-wrap items-center gap-3 pt-1">
+                      <a
+                        href={mailtoHref}
+                        className="inline-flex items-center gap-1.5 font-semibold text-[#00e575] hover:underline"
+                      >
+                        <EnvelopeSimple className="w-4 h-4" />
+                        <span>Send via Email Client instead</span>
+                      </a>
+                      <a
+                        href="https://wa.me/2348091212224"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-[#00e575] transition-colors"
+                      >
+                        <WhatsappLogo className="w-4 h-4" weight="fill" />
+                        <span>WhatsApp Support</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
 
                 <div className="pt-2">
                   <button

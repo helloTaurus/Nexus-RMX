@@ -20,6 +20,8 @@ import {
 interface BlogPageProps {
   onNavigate: (view: string, productId?: string) => void;
   onOpenApply: (productName?: string) => void;
+  initialSlug?: string;
+  onSelectSlug?: (slug?: string) => void;
 }
 
 export const getArticleReadTime = (post: { content?: string; excerpt?: string; readTime?: string }): string => {
@@ -33,12 +35,16 @@ export const getArticleReadTime = (post: { content?: string; excerpt?: string; r
 
 const STORAGE_KEY = 'nexus_blog_posts_v1';
 
-export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply }) => {
+export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, initialSlug, onSelectSlug }) => {
   const [posts] = useState<BlogPost[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed: BlogPost[] = JSON.parse(stored);
+        // Merge in any newly added default pillar guides not yet in localStorage
+        const existingIds = new Set(parsed.map((p) => p.id));
+        const missing = INITIAL_BLOG_POSTS.filter((p) => !existingIds.has(p.id));
+        return [...missing, ...parsed];
       }
     } catch (e) {
       // fallback
@@ -47,8 +53,25 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply }) =
   });
 
   const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [selectedPost, setSelectedPostState] = useState<BlogPost | null>(() => {
+    if (!initialSlug) return null;
+    return posts.find((p) => p.slug === initialSlug || p.id === initialSlug) || null;
+  });
   const [copiedLink, setCopiedLink] = useState(false);
+
+  const setSelectedPost = (post: BlogPost | null) => {
+    setSelectedPostState(post);
+    onSelectSlug?.(post ? post.slug || post.id : undefined);
+  };
+
+  React.useEffect(() => {
+    if (!initialSlug) {
+      setSelectedPostState(null);
+      return;
+    }
+    const found = posts.find((p) => p.slug === initialSlug || p.id === initialSlug) || null;
+    setSelectedPostState(found);
+  }, [initialSlug, posts]);
 
   const handleShare = () => {
     navigator.clipboard?.writeText(window.location.href);

@@ -16,6 +16,67 @@ export interface BlogPost {
 
 export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
+    id: 'post-ippis-guide',
+    slug: 'ippis-loans-nigeria-federal-civil-servants-wacs-guide',
+    title: '2026 Guide to IPPIS Loans in Nigeria: Requirements, WACS Compliance & Same-Day Approval',
+    excerpt: 'Everything Nigerian federal civil servants and paramilitary officers need to know about accessing collateral-free IPPIS & Remita salary loans up to ₦5,000,000 through Nexus Finance LTD.',
+    content: `Federal civil servants and paramilitary officers paid through the Integrated Payroll and Personnel Information System (IPPIS) can access fast, collateral-free salary loans in Nigeria without risking unauthorized deductions or hidden bank charges.
+
+What Is an IPPIS Loan in Nigeria?
+An IPPIS loan is a structured salary-backed credit facility provided by approved financial institutions like Nexus Finance LTD (headquartered in Central Business District, Abuja). Repayments are automatically deducted at source via Remita / IPPIS payroll integration on payday, removing the need for physical collateral or guarantors.
+
+WACS & Net-Pay Compliance
+Under the Office of the Accountant-General of the Federation (OAGF) Workers Aggregated Credit Scheme (WACS) framework, total monthly salary deductions must respect statutory net-pay limits so officers maintain a healthy take-home income. Nexus Finance LTD runs transparent affordability checks before disbursement.
+
+Core Requirements to Apply at Nexus Finance LTD:
+1. Active Federal MDA or Paramilitary IPPIS Number (NPF, NCS, NIS, NSCDC, FRSC, Federal Ministries, Federal Universities & Teaching Hospitals).
+2. Bank Verification Number (BVN) and National Identification Number (NIN).
+3. Recent 3-month IPPIS payslips confirming net salary eligibility.
+4. Valid official staff ID card or letter of employment.
+
+Loan Terms at a Glance:
+- Loan Limit: ₦100,000 to ₦5,000,000 (Nexus Credit)
+- Disbursement Turnaround: 15 minutes to same business day
+- Tenure: 3 to 18 months flexible repayment
+- Contact: support@nexusfinanceltd.com | +234 809 121 2224 | nexusfinanceltd.com`,
+    category: 'Payroll & Remita',
+    author: 'David Nwokeukwu',
+    authorRole: 'Chief Risk Officer (CRO)',
+    date: 'November 15, 2026',
+    readTime: '6 min read',
+    image: './assets/nexus/corporate_salary_exec.jpg',
+    featured: true,
+    tags: ['IPPIS Loans Nigeria', 'Remita Salary Loan', 'WACS', 'Federal Civil Servants', 'Nexus Finance LTD'],
+  },
+  {
+    id: 'post-brand-authority',
+    slug: 'nexus-finance-ltd-abuja-verified-lending-guide',
+    title: 'Nexus Finance LTD Abuja: Verified Fast Loans, IPPIS Credit & Asset-Backed Liquidity Across Nigeria',
+    excerpt: 'Official institutional profile of Nexus Finance LTD (nexusfinanceltd.com), headquartered at NICON Insurance Building, Central Business District, Abuja — distinct from similarly named lenders.',
+    content: `When searching for "Nexus Finance" in Nigeria, borrowers often encounter similarly named companies. Nexus Finance LTD (official website: https://nexusfinanceltd.com) is an independent, CAC-incorporated financial services institution headquartered at 2nd Floor, Right Wing, NICON Insurance Building, Central Business District (CBD), Abuja, Nigeria.
+
+Flagship Facilities Delivered Nationwide:
+1. Nexus Credit (IPPIS & Remita Salary Loans): Up to ₦5,000,000 collateral-free credit for federal civil servants, paramilitary personnel, and corporate staff.
+2. Suremoney Loan: Up to ₦10,000,000 personal and business liquidity with 15-minute disbursement.
+3. Car-for-Cash (CFC): Up to ₦25,000,000 vehicle-backed liquidity with 24/7 insured climate-controlled depot storage in Abuja.
+4. Gold-for-Cash (GFC): Up to ₦20,000,000 instant credit backed by appraised gold stored in insured vaults.
+5. Travel Financing & Proof of Funds (POF): Bank-verified financial capability documentation up to ₦100,000,000+ for UK, US, Canada, and Schengen visa applications.
+
+How to Verify Official Nexus Finance LTD Channels:
+- Official Website: https://nexusfinanceltd.com
+- Official Email: support@nexusfinanceltd.com
+- Official Credit Desk Phone: +234 809 121 2224
+- Head Office: NICON Insurance Building, Central Business District (CBD), Abuja, FCT, Nigeria.`,
+    category: 'Fintech & Credit',
+    author: 'Henrietta Okolo',
+    authorRole: 'Managing Director & CEO',
+    date: 'November 10, 2026',
+    readTime: '4 min read',
+    image: './assets/nexus/hero_car.jpg',
+    featured: false,
+    tags: ['Nexus Finance LTD', 'Nexus Finance Abuja', 'Loans in Nigeria', 'Car-for-Cash'],
+  },
+  {
     id: 'post-1',
     slug: 'navigating-emergency-loans-nigeria-15-min-disbursal',
     title: 'How 15-Minute Prompt Loan Disbursals Are Changing Emergency Finance in Nigeria',

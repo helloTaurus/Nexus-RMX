@@ -7,6 +7,8 @@ import { MaterialSnackbar, SnackbarMessage } from './components/MaterialSnackbar
 import { LoadingScreen } from './components/LoadingScreen';
 import { CookieConsent } from './components/CookieConsent';
 import { useIOReveal } from './hooks/useIOReveal';
+import { useSeo } from './hooks/useSeo';
+import { buildClientUrl, parseRouteFromLocation } from './seo/seoConfig';
 
 // Lazy-loaded below-the-fold home sections
 const InteractiveCalculator = lazy(() =>
@@ -44,6 +46,9 @@ const AboutUsPage = lazy(() =>
 const ProductDetailPage = lazy(() =>
   import('./components/ProductDetailPage').then((m) => ({ default: m.ProductDetailPage }))
 );
+const IppisLoansPage = lazy(() =>
+  import('./components/IppisLoansPage').then((m) => ({ default: m.IppisLoansPage }))
+);
 const BlogPage = lazy(() =>
   import('./components/BlogPage').then((m) => ({ default: m.BlogPage }))
 );
@@ -78,14 +83,21 @@ type ActiveView =
   | 'careers'
   | 'gallery'
   | 'product-detail'
+  | 'ippis-loans'
   | 'cms'
   | 'hrms'
   | 'staffportal'
   | 'expense';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<ActiveView>('home');
-  const [selectedProductId, setSelectedProductId] = useState<string>('suremoney-loan');
+  const initialRoute = React.useMemo(() => parseRouteFromLocation(), []);
+  const [currentView, setCurrentView] = useState<ActiveView>(initialRoute.view as ActiveView);
+  const [selectedProductId, setSelectedProductId] = useState<string>(
+    initialRoute.view === 'product-detail' && initialRoute.param ? initialRoute.param : 'suremoney-loan'
+  );
+  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | undefined>(
+    initialRoute.view === 'blog' ? initialRoute.param : undefined
+  );
 
   // Fast-track apply modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -114,27 +126,50 @@ export default function App() {
     });
   };
 
+  // Sync per-route document title, canonical URL, OpenGraph/Twitter tags, and Schema.org JSON-LD
+  useSeo(
+    currentView,
+    currentView === 'product-detail'
+      ? selectedProductId
+      : currentView === 'blog'
+        ? selectedBlogSlug
+        : undefined
+  );
+
   // Trigger intersection observer reveal animation on viewport entry
   useIOReveal('.io-reveal');
 
-  // Support direct hash navigation like #cms, #hrms, #staffportal, and #expense (or expense. subdomain)
+  const pushCleanUrl = (routePath: string) => {
+    try {
+      const target = buildClientUrl(routePath);
+      if (window.location.pathname !== target || window.location.hash) {
+        window.history.pushState({}, '', target);
+      }
+    } catch {
+      // Ignore history API errors in restricted sandboxed contexts
+    }
+  };
+
+  // Support browser Back/Forward (popstate) and direct hash navigation (#cms, #hrms, #staffportal, #expense)
   React.useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.toLowerCase();
-      const host = typeof window !== 'undefined' ? window.location.hostname.toLowerCase() : '';
-      if (host.startsWith('expense') || hash === '#expense') {
-        setCurrentView('expense');
-      } else if (hash === '#staffportal') {
-        setCurrentView('staffportal');
-      } else if (hash === '#hrms') {
-        setCurrentView('hrms');
-      } else if (hash === '#cms') {
-        setCurrentView('cms');
+    const syncFromLocation = () => {
+      const parsed = parseRouteFromLocation();
+      setCurrentView(parsed.view as ActiveView);
+      if (parsed.view === 'product-detail' && parsed.param) {
+        setSelectedProductId(parsed.param);
+      }
+      if (parsed.view === 'blog') {
+        setSelectedBlogSlug(parsed.param);
+      } else {
+        setSelectedBlogSlug(undefined);
       }
     };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    window.addEventListener('popstate', syncFromLocation);
+    window.addEventListener('hashchange', syncFromLocation);
+    return () => {
+      window.removeEventListener('popstate', syncFromLocation);
+      window.removeEventListener('hashchange', syncFromLocation);
+    };
   }, []);
 
   const handleOpenApply = (productName?: string, amount?: number, tenure?: number) => {
@@ -145,33 +180,47 @@ export default function App() {
   };
 
   const handleNavigate = (view: string, productId?: string) => {
+    if (view === 'ippis-loans') {
+      setCurrentView('ippis-loans');
+      pushCleanUrl('/ippis-loans-nigeria');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (view === 'product-detail') {
-      setSelectedProductId(productId || 'suremoney-loan');
+      const targetId = productId || 'suremoney-loan';
+      setSelectedProductId(targetId);
       setCurrentView('product-detail');
+      pushCleanUrl(`/loans/${targetId}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (view === 'about') {
       setCurrentView('about');
+      pushCleanUrl('/about');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (view === 'blog') {
+      setSelectedBlogSlug(productId);
       setCurrentView('blog');
+      pushCleanUrl(productId ? `/blog/${productId}` : '/blog');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (view === 'careers') {
       setCurrentView('careers');
+      pushCleanUrl('/careers');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     if (view === 'gallery') {
       setCurrentView('gallery');
+      pushCleanUrl('/gallery');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -233,6 +282,7 @@ export default function App() {
 
     // Anchors on Home
     setCurrentView('home');
+    pushCleanUrl('/');
     if (view === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -269,6 +319,10 @@ export default function App() {
             <AboutUsPage onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
           )}
 
+          {currentView === 'ippis-loans' && (
+            <IppisLoansPage onOpenApply={handleOpenApply} onNavigate={handleNavigate} />
+          )}
+
           {currentView === 'product-detail' && (
             <ProductDetailPage
               productId={selectedProductId}
@@ -279,7 +333,15 @@ export default function App() {
           )}
 
           {currentView === 'blog' && (
-            <BlogPage onNavigate={handleNavigate} onOpenApply={handleOpenApply} />
+            <BlogPage
+              onNavigate={handleNavigate}
+              onOpenApply={handleOpenApply}
+              initialSlug={selectedBlogSlug}
+              onSelectSlug={(slug) => {
+                setSelectedBlogSlug(slug);
+                pushCleanUrl(slug ? `/blog/${slug}` : '/blog');
+              }}
+            />
           )}
 
           {currentView === 'careers' && (

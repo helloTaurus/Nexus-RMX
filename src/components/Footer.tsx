@@ -107,6 +107,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenApply, onNavigate }) => {
               <li>
                 <button
                   type="button"
+                  onClick={() => handleNav('ippis-loans')}
+                  className="hover:text-[#00e575] transition-colors text-left cursor-pointer font-semibold text-neutral-200"
+                >
+                  IPPIS Loans Nigeria
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
                   onClick={() => handleNav('product-detail', 'suremoney-loan')}
                   className="hover:text-[#00e575] transition-colors text-left cursor-pointer"
                 >

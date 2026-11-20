@@ -266,6 +266,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenApply, onNavigate, current
                     </div>
 
                     <button
+                      onClick={() => handleNavClick('ippis-loans')}
+                      className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/10 text-left transition-colors cursor-pointer"
+                    >
+                      <Bank className="w-4 h-4 text-[#00e575] shrink-0" weight="bold" />
+                      <div>
+                        <div className="text-xs font-semibold text-white">IPPIS Loans Nigeria</div>
+                        <div className="text-[10px] text-neutral-400">Federal civil servant &amp; Remita loans up to ₦5M</div>
+                      </div>
+                    </button>
+
+                    <button
                       onClick={() => handleNavClick('product-detail', 'suremoney-loan')}
                       className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/10 text-left transition-colors cursor-pointer"
                     >

@@ -81,7 +81,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const isDeposit = product.id === 'high-yield-investments';
 
   const handleCopySimulation = () => {
-    const text = `Nexus Finance Estimate:\n• Facility: ${product.name}\n• Principal: ₦${simAmount.toLocaleString('en-NG')}\n• Tenure: ${simTenure} Month(s)\n• Estimated Monthly: ₦${Math.round(monthlyInstallment).toLocaleString('en-NG')}\n• Total Repayment: ₦${Math.round(totalRepayment).toLocaleString('en-NG')}\n• Turnaround: ${product.turnaroundTime}\nhttps://nexusfinance.ng`;
+    const text = `Nexus Finance LTD Estimate:\n• Facility: ${product.name}\n• Principal: ₦${simAmount.toLocaleString('en-NG')}\n• Tenure: ${simTenure} Month(s)\n• Estimated Monthly: ₦${Math.round(monthlyInstallment).toLocaleString('en-NG')}\n• Total Repayment: ₦${Math.round(totalRepayment).toLocaleString('en-NG')}\n• Turnaround: ${product.turnaroundTime}\nhttps://nexusfinanceltd.com/loans/${product.id}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text);
     }
@@ -90,8 +90,36 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   return (
     <div className="pt-24 pb-20 bg-black text-white font-sans min-h-screen">
-      {/* Back to Products Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6">
+      {/* Semantic Breadcrumb & Back Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 flex flex-wrap items-center justify-between gap-4">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex flex-wrap items-center gap-2 text-xs text-neutral-400">
+            <li>
+              <button
+                type="button"
+                onClick={() => onNavigate('home')}
+                className="hover:text-[#00e575] transition-colors cursor-pointer"
+              >
+                Home
+              </button>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li>
+              <button
+                type="button"
+                onClick={() => onNavigate('about-products')}
+                className="hover:text-[#00e575] transition-colors cursor-pointer"
+              >
+                Loans
+              </button>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li className="text-[#00e575] font-semibold" aria-current="page">
+              {product.name}
+            </li>
+          </ol>
+        </nav>
+
         <button
           onClick={() => onNavigate('about-products')}
           className="inline-flex items-center gap-2 text-xs font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer"

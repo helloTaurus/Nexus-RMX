@@ -37,6 +37,24 @@ export const INITIAL_GALLERY_ITEMS: GalleryItem[] = [
   },
   // CSR Folder
   {
+    id: 'gal-csr-kuje-1',
+    title: 'A Day of Impact, Reflection & Purpose — Kuje Custodial Centre CSR Outreach',
+    category: 'CSR',
+    location: 'Medium Security Custodial Centre, Kuje, Abuja',
+    date: 'November 2026',
+    image: '/assets/aistudio/A_Day_of_Impact__Reflection__and_Purpose_-_GABS_Cooperative_CSR_OutreachToday__the_GABS_Coopera__1__78ec6aec.webp',
+    description: 'The Nexus Finance / GABS Cooperative outreach team delivering essential care packages and welfare supplies at the Medium Security Custodial Centre in Kuje, Abuja.',
+  },
+  {
+    id: 'gal-csr-kuje-2',
+    title: 'Community Care Distribution — Suremoney & GABS Cooperative Volunteer Team',
+    category: 'CSR',
+    location: 'Medium Security Custodial Centre, Kuje, Abuja',
+    date: 'November 2026',
+    image: '/assets/aistudio/A_Day_of_Impact__Reflection__and_Purpose_-_GABS_Cooperative_CSR_OutreachToday__the_GABS_Coopera__2__bc603a27.webp',
+    description: 'Staff volunteers alongside packaged relief and welfare bags prepared for inmates and support staff during our FCT community impact drive.',
+  },
+  {
     id: 'gal-csr-1',
     title: 'Nexus Women Financial Literacy & Grant Initiative',
     category: 'CSR',

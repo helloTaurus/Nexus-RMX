@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { GalleryItem, INITIAL_GALLERY_ITEMS, GalleryFolder } from '../data/galleryData';
+import { resolveAssetUrl } from '../seo/seoConfig';
 import {
   MapPin,
   Calendar,
@@ -19,7 +20,7 @@ interface GalleryPageProps {
   onOpenApply: (productName?: string) => void;
 }
 
-const STORAGE_KEY = 'nexus_gallery_items_v1';
+const STORAGE_KEY = 'nexus_gallery_items_v2';
 
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate, onOpenApply }) => {
   const [items] = useState<GalleryItem[]>(() => {
@@ -180,7 +181,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate, onOpenAppl
             {/* Slideshow Image Area */}
             <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black overflow-hidden flex items-center justify-center">
               <img
-                src={activeItem.image}
+                src={resolveAssetUrl(activeItem.image)}
                 alt={activeItem.title}
                 decoding="async"
                 className="w-full h-full object-contain"
@@ -297,11 +298,11 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigate, onOpenAppl
                 {/* Image Frame */}
                 <div className="relative aspect-[16/11] rounded-2xl overflow-hidden mb-4 bg-slate-900 border border-white/10">
                   <img
-                    src={item.image}
+                    src={resolveAssetUrl(item.image)}
                     alt={item.title}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-[#00e575] border border-white/10 uppercase tracking-wider">
                     {item.category}

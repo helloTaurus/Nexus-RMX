@@ -30,7 +30,7 @@ interface CmsPortalProps {
 
 // Storage keys
 const BLOG_STORAGE_KEY = 'nexus_blog_posts_v2';
-const GALLERY_STORAGE_KEY = 'nexus_gallery_items_v1';
+const GALLERY_STORAGE_KEY = 'nexus_gallery_items_v2';
 const CAREERS_STORAGE_KEY = 'nexus_career_openings_v1';
 const CMS_AUTH_SESSION_KEY = 'nexus_cms_auth_session';
 

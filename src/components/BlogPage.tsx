@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BlogPost, INITIAL_BLOG_POSTS } from '../data/blogData';
+import { resolveAssetUrl } from '../seo/seoConfig';
 import {
   ArrowLeft,
   Calendar,
@@ -283,7 +284,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, ini
               {/* Featured Cover Image */}
               <div className="aspect-[16/9] rounded-3xl overflow-hidden bg-slate-900 border border-white/10 shadow-2xl relative">
                 <img
-                  src={selectedPost.image}
+                  src={resolveAssetUrl(selectedPost.image)}
                   alt={selectedPost.title}
                   decoding="async"
                   className="w-full h-full object-cover"
@@ -421,7 +422,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, ini
                     >
                       <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-900 shrink-0 border border-white/10">
                         <img
-                          src={post.image}
+                          src={resolveAssetUrl(post.image)}
                           alt={post.title}
                           loading="lazy"
                           decoding="async"
@@ -534,7 +535,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, ini
             >
               <div className="lg:col-span-7 aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 border border-white/10">
                 <img
-                  src={featuredPost.image}
+                  src={resolveAssetUrl(featuredPost.image)}
                   alt={featuredPost.title}
                   loading="lazy"
                   decoding="async"
@@ -588,7 +589,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, ini
                 <div>
                   <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 mb-5 border border-white/10">
                     <img
-                      src={post.image}
+                      src={resolveAssetUrl(post.image)}
                       alt={post.title}
                       loading="lazy"
                       decoding="async"

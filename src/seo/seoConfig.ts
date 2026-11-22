@@ -464,6 +464,30 @@ export function buildClientUrl(routePath: string): string {
   return `${base}${normalized}`;
 }
 
+/**
+ * Resolve relative './assets/...' paths so nested routes (/blog/<slug>, /loans/<id>)
+ * never request assets relative to the nested URL directory.
+ */
+export function resolveAssetUrl(src?: string): string {
+  if (!src) return '';
+  if (
+    src.startsWith('http://') ||
+    src.startsWith('https://') ||
+    src.startsWith('data:') ||
+    src.startsWith('blob:')
+  ) {
+    return src;
+  }
+  const base = getRuntimeBasePath();
+  if (src.startsWith('./')) {
+    return `${base}/${src.slice(2)}`;
+  }
+  if (src.startsWith('/')) {
+    return base && !src.startsWith(`${base}/`) ? `${base}${src}` : src;
+  }
+  return `${base}/${src}`;
+}
+
 export function parseRouteFromLocation(): { view: string; param?: string } {
   if (typeof window === 'undefined') return { view: 'home' };
   const host = window.location.hostname.toLowerCase();

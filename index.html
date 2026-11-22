@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        var p = window.location.pathname;
+        var b = (p === '/Nexus-RMX' || p.indexOf('/Nexus-RMX/') === 0) ? '/Nexus-RMX/' : '/';
+        var base = document.querySelector('base') || document.createElement('base');
+        base.setAttribute('href', b);
+        if (!base.parentNode) document.head.appendChild(base);
+      })();
+    </script>
     <link rel="icon" href="./favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="48x48" href="./favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="./favicon-192x192.png" />

@@ -33,7 +33,74 @@ export const getArticleReadTime = (post: { content?: string; excerpt?: string; r
   return `${minutes} min read`;
 };
 
-const STORAGE_KEY = 'nexus_blog_posts_v1';
+const STORAGE_KEY = 'nexus_blog_posts_v2';
+
+function renderInlineFormatting(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*|https?:\/\/[^\s)]+)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="text-white font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith('http://') || part.startsWith('https://')) {
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#00e575] hover:underline break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
+function renderArticleBlock(block: string, idx: number): React.ReactNode {
+  const trimmed = block.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.startsWith('### ')) {
+    return (
+      <h3 key={idx} className="text-lg sm:text-xl font-bold text-white font-display pt-3">
+        {trimmed.slice(4)}
+      </h3>
+    );
+  }
+
+  if (trimmed.startsWith('## ')) {
+    return (
+      <h2 key={idx} className="text-xl sm:text-2xl font-extrabold text-white font-display pt-5 border-t border-white/5 first:border-t-0 first:pt-0">
+        {trimmed.slice(3)}
+      </h2>
+    );
+  }
+
+  const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
+  if (lines.length > 0 && lines.every((l) => l.startsWith('- '))) {
+    return (
+      <ul key={idx} className="space-y-2.5 pl-5 list-disc marker:text-[#00e575]">
+        {lines.map((line, liIdx) => (
+          <li key={liIdx} className="leading-relaxed text-slate-300">
+            {renderInlineFormatting(line.slice(2))}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <p key={idx} className="leading-relaxed">
+      {renderInlineFormatting(trimmed)}
+    </p>
+  );
+}
 
 export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, initialSlug, onSelectSlug }) => {
   const [posts] = useState<BlogPost[]>(() => {
@@ -230,11 +297,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onNavigate, onOpenApply, ini
 
               {/* Unabridged Article Body */}
               <div className="space-y-5 text-slate-300 text-sm sm:text-base leading-relaxed pt-2 font-sans">
-                {selectedPost.content.split('\n\n').map((paragraph: string, idx: number) => (
-                  <p key={idx} className="leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
+                {selectedPost.content.split('\n\n').map((block: string, idx: number) => renderArticleBlock(block, idx))}
               </div>
 
               {/* Tags Strip */}

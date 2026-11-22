@@ -311,9 +311,13 @@ export function getRouteSeo(view: string, param?: string): RouteSeoData {
         const imgPath = post.image.startsWith('./')
           ? `${SITE_URL}/${post.image.slice(2)}`
           : `${SITE_URL}${post.image}`;
+        const shortTitle =
+          post.title.length <= 58
+            ? post.title
+            : `${post.title.slice(0, 55).replace(/\s+\S*$/, '')}`;
         return {
           path,
-          title: `${post.title.slice(0, 48)} | Nexus Finance`,
+          title: `${shortTitle} | Nexus Finance`,
           description: post.excerpt.slice(0, 158),
           canonical: `${SITE_URL}${path}`,
           ogType: 'article',

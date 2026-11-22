@@ -154,9 +154,27 @@ function buildBlogIndexBodyHtml(): string {
 
 function buildBlogPostBodyHtml(slug: string): string {
   const post = INITIAL_BLOG_POSTS.find((p) => (p.slug || p.id) === slug) || INITIAL_BLOG_POSTS[0];
-  const paragraphs = post.content
+  const blocksHtml = post.content
     .split(/\n\n+/)
-    .map((p) => `<p>${escapeHtml(p.trim())}</p>`)
+    .map((block) => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      if (trimmed.startsWith('### ')) {
+        return `<h3>${escapeHtml(trimmed.slice(4))}</h3>`;
+      }
+      if (trimmed.startsWith('## ')) {
+        return `<h2>${escapeHtml(trimmed.slice(3))}</h2>`;
+      }
+      const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
+      if (lines.length > 0 && lines.every((l) => l.startsWith('- '))) {
+        const items = lines
+          .map((l) => `<li>${escapeHtml(l.slice(2).replace(/\*\*([^*]+)\*\*/g, '$1'))}</li>`)
+          .join('\n');
+        return `<ul>${items}</ul>`;
+      }
+      return `<p>${escapeHtml(trimmed.replace(/\*\*([^*]+)\*\*/g, '$1'))}</p>`;
+    })
+    .filter(Boolean)
     .join('\n');
   return `
     <main>
@@ -165,7 +183,7 @@ function buildBlogPostBodyHtml(slug: string): string {
         <h1>${escapeHtml(post.title)}</h1>
         <p>By ${escapeHtml(post.author)} (${escapeHtml(post.authorRole)}) • ${escapeHtml(post.date)} • ${escapeHtml(post.category)}</p>
         <p><strong>${escapeHtml(post.excerpt)}</strong></p>
-        ${paragraphs}
+        ${blocksHtml}
       </article>
     </main>`;
 }
